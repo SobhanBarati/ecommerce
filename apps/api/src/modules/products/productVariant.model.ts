@@ -5,7 +5,7 @@ export interface IProductVariant extends Document {
   color: string
   sku: string
   stock: number
-  price?: number // If variant-specific pricing
+  price?: number
   product: Schema.Types.ObjectId
   isActive: boolean
   createdAt: Date
@@ -27,7 +27,7 @@ const ProductVariantSchema = new Schema<IProductVariant>(
     sku: {
       type: String,
       required: [true, 'SKU is required'],
-      unique: true,
+      unique: true, // Remove index: true - already unique
       trim: true,
       uppercase: true,
     },
@@ -45,6 +45,7 @@ const ProductVariantSchema = new Schema<IProductVariant>(
       type: Schema.Types.ObjectId,
       ref: 'Product',
       required: true,
+      index: true,
     },
     isActive: {
       type: Boolean,
@@ -65,13 +66,7 @@ const ProductVariantSchema = new Schema<IProductVariant>(
   }
 )
 
-// Indexes
-ProductVariantSchema.index({ sku: 1 })
-ProductVariantSchema.index({ product: 1 })
-ProductVariantSchema.index({ isActive: 1 })
-ProductVariantSchema.index({ 'product': 1, 'isActive': 1 })
+// Only add additional indexes
+ProductVariantSchema.index({ product: 1, isActive: 1 })
 
-export const ProductVariantModel = mongoose.model<IProductVariant>(
-  'ProductVariant',
-  ProductVariantSchema
-)
+export const ProductVariantModel = mongoose.model<IProductVariant>('ProductVariant', ProductVariantSchema)

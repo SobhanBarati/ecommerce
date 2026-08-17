@@ -16,13 +16,13 @@ const CategorySchema = new Schema<ICategory>(
       type: String,
       required: [true, 'Category name is required'],
       trim: true,
-      unique: true,
+      unique: true, // Remove index: true - already unique
     },
     slug: {
       type: String,
       required: [true, 'Category slug is required'],
       trim: true,
-      unique: true,
+      unique: true, // Remove index: true - already unique
       lowercase: true,
     },
     description: {
@@ -53,8 +53,7 @@ const CategorySchema = new Schema<ICategory>(
   }
 )
 
-// Indexes
-CategorySchema.index({ slug: 1 })
+// Only add indexes that aren't already defined
 CategorySchema.index({ parent: 1 })
 CategorySchema.index({ isActive: 1 })
 

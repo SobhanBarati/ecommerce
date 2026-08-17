@@ -31,7 +31,6 @@ const ProductSchema = new Schema<IProduct>(
       unique: true,
       trim: true,
       lowercase: true,
-      index: true,
     },
     description: {
       type: String,
